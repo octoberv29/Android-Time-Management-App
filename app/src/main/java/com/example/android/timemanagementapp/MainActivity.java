@@ -1,21 +1,24 @@
 package com.example.android.timemanagementapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.android.timemanagementapp.data.TaskDbHelper;
@@ -24,8 +27,10 @@ import com.example.android.timemanagementapp.data.TaskContract.ListEntry;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final int LIST_LOADER = 1;
     private FloatingActionButton mFab;
     private RecyclerView mRecyclerView;
     private ListAdapter mAdapter;
@@ -44,11 +49,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addNewList();
-                mAdapter.swapCursor(getAllLists());
+//                mAdapter.swapCursor(getAllLists());
             }
         });
 
         setupRecyclerView();
+        getSupportLoaderManager().initLoader(LIST_LOADER, null, this);
     }
 
     private void setupRecyclerView() {
@@ -58,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
 
         // setup the Adapter
-        Cursor cursor = getAllLists();
-        mAdapter = new ListAdapter(this, cursor);
+//        Cursor cursor = getAllLists();
+        mAdapter = new ListAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
 
         // add left and right swipes for delete
@@ -74,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 long id = (long) viewHolder.itemView.getTag();
                 deleteList(id);
-
-                mAdapter.swapCursor(getAllLists());
+//                mAdapter.swapCursor(getAllLists());
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -84,16 +89,17 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
+    // query db
     private Cursor getAllLists() {
-        // query db
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String[] projection = {ListEntry._ID, ListEntry.COLUMN_LIST_TITLE};
-        Cursor cursor = db.query(
-                ListEntry.TABLE_NAME,
+        String[] projection = {
+                ListEntry._ID,
+                ListEntry.COLUMN_LIST_TITLE
+        };
+
+        Cursor cursor = getContentResolver().query(
+                ListEntry.CONTENT_URI,
                 projection,
-                null,
-                null,
                 null,
                 null,
                 null
@@ -101,26 +107,33 @@ public class MainActivity extends AppCompatActivity {
         return cursor;
     }
 
-    private long addNewList() {
-        // Add a random item to the db
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        Random random = new Random();
-
+    // Add a random item to the db
+    private void addNewList() {
         ContentValues cv = new ContentValues();
-        cv.put(ListEntry.COLUMN_LIST_TITLE, String.valueOf(random.nextInt()));
+        cv.put(ListEntry.COLUMN_LIST_TITLE, String.valueOf(new Random().nextInt()));
 
-        return db.insert(ListEntry.TABLE_NAME, null, cv);
+        Uri newUri = getContentResolver().insert(
+                ListEntry.CONTENT_URI,
+                cv
+        );
+
     }
 
-    private int deleteList(long id) {
-        // Delete an existing list from the db
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+    // Delete an existing list from the db
+    private void deleteList(long id) {
+        Uri uri = ContentUris.withAppendedId(ListEntry.CONTENT_URI, id);
+        String selection = ListEntry._ID + "=" + id;
 
-        return db.delete(
-                ListEntry.TABLE_NAME,
-                ListEntry._ID + "=" + id,
+        int rowsDeleted = getContentResolver().delete(
+                uri,
+                selection,
                 null
         );
+        if (rowsDeleted == 0) {
+            Toast.makeText(this, "Deletion failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Deletion was successful", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -139,5 +152,33 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        String[] projection = {
+                ListEntry._ID,
+                ListEntry.COLUMN_LIST_TITLE
+        };
+
+        return new CursorLoader(
+                this,
+                ListEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
     }
 }

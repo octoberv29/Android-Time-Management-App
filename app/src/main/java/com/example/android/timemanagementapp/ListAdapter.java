@@ -44,7 +44,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
+        if (mCursor != null) {
+            return mCursor.getCount();
+        } else {
+            return 0;
+        }
     }
 
 
