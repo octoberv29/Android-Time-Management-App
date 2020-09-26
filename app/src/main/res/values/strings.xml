@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">Time Management App</string>
+    <string name="app_name">timecode</string>
+
+    <!-- navigation menu-->
+    <string name="priority">Priority</string>
+    <string name="inbox">Inbox</string>
+    <string name="completed">Completed</string>
+    <string name="calendar">Calendar</string>
+    <string name="today">Today</string>
+    <string name="week">Week</string>
+    <string name="projects">Projects</string>
+    <string name="settings">Settings</string>
+
+
+    <string name="user">User</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="description">Description</string>
+    <string name="details">Details</string>
+    <string name="title">Title</string>
+    <string name="project">Project</string>
+
+    <!-- Edit Task Menu -->
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="set_reminder">Set Reminder</string>
+    <string name="title_activity_edit_project">EditProjectActivity</string>
+    <string name="title_activity_view_project">ViewProjectActivity</string>
 </resources>

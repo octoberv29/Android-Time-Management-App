@@ -15,7 +15,7 @@ public class DeleteAsyncTask extends AsyncTask<Task, Void, Void> {
 
     @Override
     protected Void doInBackground(Task... tasks) {
-        taskDao.delete(tasks);
+        taskDao.deleteTask(tasks[0]);
         return null;
     }
 

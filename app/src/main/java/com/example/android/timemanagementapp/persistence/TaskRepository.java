@@ -27,7 +27,7 @@ public class TaskRepository {
     }
 
     public LiveData<List<Task>> retrieveTasks() {
-        return taskDatabase.getNoteDao().getTasks();
+        return taskDatabase.getNoteDao().getAllTasks();
     }
 
     public void deleteTask(Task task) {

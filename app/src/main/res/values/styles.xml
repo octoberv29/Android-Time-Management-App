@@ -1,12 +1,34 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/darkGrey</item> <!-- Requires api 21 -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:fontFamily">@font/averta_regular</item>
+        <item name="android:textColorHint">@color/white</item>
     </style>
+
+    <style name="Toolbar" parent="Base.Theme.MaterialComponents.Light">
+        <item name="android:popupTheme">@style/Base.Widget.MaterialComponents.PopupMenu</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
+
+    <style name="ThemeOverlay.AppCompat.navTheme">
+
+        <!-- Color of text and icon when SELECTED -->
+        <item name="colorPrimary">@android:color/black</item>
+
+        <!-- Background color when SELECTED -->
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+
+    </style>
+
 
 </resources>

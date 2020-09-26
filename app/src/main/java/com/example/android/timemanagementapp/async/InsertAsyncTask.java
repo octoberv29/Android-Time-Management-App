@@ -15,7 +15,7 @@ public class InsertAsyncTask extends AsyncTask<Task, Void, Void> {
 
     @Override
     protected Void doInBackground(Task... tasks) {
-        taskDao.insertTasks(tasks);
+        taskDao.insertTask(tasks[0]);
         return null;
     }
 

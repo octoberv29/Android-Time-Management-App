@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/navigation_drawer_group_main"
+        android:checkableBehavior="single">
+
+        <item android:id="@+id/menu_priority"
+            android:icon="@drawable/ic_star_black_24dp"
+            android:title="@string/priority" />
+        <item android:id="@+id/menu_inbox"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="@string/inbox" />
+        <item android:id="@+id/menu_completed"
+            android:icon="@drawable/ic_completed_black_24dp"
+            android:title="@string/completed" />
+        <item android:id="@+id/menu_today"
+            android:icon="@drawable/ic_today_black_24dp"
+            android:title="@string/today" />
+        <item android:id="@+id/menu_week"
+            android:icon="@drawable/ic_week_black_24dp"
+            android:title="@string/week" />
+        <item android:id="@+id/menu_calendar"
+            android:icon="@drawable/ic_calendar_black_24dp"
+            android:title="@string/calendar" />
+<!--        <item android:title="Projects">-->
+<!--            <menu>-->
+<!--                <item android:id="@+id/menu_AA"-->
+<!--                    android:icon="@drawable/ic_projects_black_24dp"-->
+<!--                    android:title="Advanced Algorithms" />-->
+<!--                <item android:id="@+id/menu_CG"-->
+<!--                    android:icon="@drawable/ic_projects_black_24dp"-->
+<!--                    android:title="Computer Graphics" />-->
+<!--                <item android:id="@+id/menu_FYP"-->
+<!--                    android:icon="@drawable/ic_projects_black_24dp"-->
+<!--                    android:title="Final Year Project" />-->
+<!--                <item android:id="@+id/menu_WT"-->
+<!--                    android:icon="@drawable/ic_projects_black_24dp"-->
+<!--                    android:title="Web Technologies" />-->
+<!--            </menu>-->
+<!--        </item>-->
+    </group>
+
+</menu>

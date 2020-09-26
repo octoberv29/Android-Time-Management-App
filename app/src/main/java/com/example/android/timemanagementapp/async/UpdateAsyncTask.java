@@ -15,7 +15,7 @@ public class UpdateAsyncTask extends AsyncTask<Task, Void, Void> {
 
     @Override
     protected Void doInBackground(Task... tasks) {
-        mTaskDao.update(tasks);
+        mTaskDao.updateTask(tasks[0]);
         return null;
     }
 

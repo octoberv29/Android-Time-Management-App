@@ -15,15 +15,27 @@ import java.util.List;
 public interface TaskDao {
 
     @Insert
-    long[] insertTasks(Task... tasks);
+    void insertTask(Task task);
 
-    @Query("SELECT * FROM tasks_table")
-    LiveData<List<Task>> getTasks();
+    @Query("SELECT * FROM tasks_table WHERE id = :id")
+    Task getTaskById(int id);
+
+    @Query("SELECT * FROM tasks_table WHERE completed = 0")
+    LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM tasks_table WHERE completed = 1")
+    LiveData<List<Task>> getAllCompletedTasks();
+
+    @Query("SELECT * FROM tasks_table WHERE priority = :priority")
+    LiveData<List<Task>> getTasksByPriority(int priority);
+
+    @Query("SELECT * FROM tasks_table WHERE completed = :completed")
+    LiveData<List<Task>> getTasksByCompleted(int completed);
 
     @Delete
-    int delete(Task... tasks);
+    void deleteTask(Task... tasks);
 
     @Update
-    int update(Task... tasks);
+    void updateTask(Task... tasks);
 
 }
