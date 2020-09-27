@@ -23,19 +23,23 @@ public class EditTaskActivity extends AppCompatActivity {
         binding = ActivityEditTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.editToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         repository = new TaskRepository(this);
 
         if (getIntent().hasExtra("selected_task")) {
             getExistingTask();
             isNewTask = false;
+            if (task.getTitle() != null) {
+                getSupportActionBar().setTitle(task.getTitle());
+            }
         } else {
             getNewTask();
             isNewTask = true;
+            getSupportActionBar().setTitle("New Task");
         }
-
-        setSupportActionBar(binding.editToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         binding.saveTask.setOnClickListener(v -> {
             saveTask();

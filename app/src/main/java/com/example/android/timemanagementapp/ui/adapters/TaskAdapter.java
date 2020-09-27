@@ -1,5 +1,6 @@
 package com.example.android.timemanagementapp.ui.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.android.timemanagementapp.R;
 import com.example.android.timemanagementapp.models.Task;
+import com.example.android.timemanagementapp.persistence.TaskRepository;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 import java.util.ArrayList;
@@ -23,9 +25,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
     private List<Task> mTasks = new ArrayList<>();
     private OnTaskClickListener mOnTaskClickListener;
 
-    public TaskAdapter(List<Task> tasks, OnTaskClickListener onTaskClickListener) {
+    private TaskRepository repository;
+
+    public TaskAdapter(Context context, List<Task> tasks, OnTaskClickListener onTaskClickListener) {
         this.mTasks = tasks;
         this.mOnTaskClickListener = onTaskClickListener;
+        repository = new TaskRepository(context);
     }
 
     @Override
@@ -40,6 +45,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
         holder.title.setText(task.getTitle());
         holder.checkBox.setChecked(task.getCompleted());
         holder.priority.setFavorite(task.getPriority());
+
+        holder.checkBox.setOnClickListener(view -> {
+            if (((CheckBox) view).isChecked()) {
+                String message = "         Great Job!\nTask is now completed";
+                Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG).show();
+                task.setCompleted(true);
+            } else {
+                task.setCompleted(false);
+            }
+            repository.updateTask(task);
+        });
+
+        holder.priority.setOnFavoriteChangeListener((buttonView, favorite) -> {
+            if (buttonView.isFavorite()) {
+                task.setPriority(true);
+            } else {
+                task.setPriority(false);
+            }
+            repository.updateTask(task);
+        });
     }
 
     @Override
@@ -58,27 +83,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
             super(itemView);
 
             item = itemView.findViewById(R.id.cardview_item);
-            item.setRadius(16);
-            item.setCardElevation(8);
-
             title = itemView.findViewById(R.id.textview_task_title);
-
             checkBox = itemView.findViewById(R.id.checkbox_task);
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // TODO: update the completed of a task
-                    if (((CheckBox) view).isChecked()) {
-                        String message = "         Great Job!\nTask is now completed";
-                        Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-
             priority = itemView.findViewById(R.id.toggle_priority);
-            priority.setOnFavoriteChangeListener((buttonView, favorite) -> {
-                //TODO: change priority
-            });
 
             itemView.setOnClickListener(this);
         }

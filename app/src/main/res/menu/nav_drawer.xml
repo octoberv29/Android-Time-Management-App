@@ -14,15 +14,15 @@
         <item android:id="@+id/menu_completed"
             android:icon="@drawable/ic_completed_black_24dp"
             android:title="@string/completed" />
-        <item android:id="@+id/menu_today"
-            android:icon="@drawable/ic_today_black_24dp"
-            android:title="@string/today" />
-        <item android:id="@+id/menu_week"
-            android:icon="@drawable/ic_week_black_24dp"
-            android:title="@string/week" />
-        <item android:id="@+id/menu_calendar"
-            android:icon="@drawable/ic_calendar_black_24dp"
-            android:title="@string/calendar" />
+<!--        <item android:id="@+id/menu_today"-->
+<!--            android:icon="@drawable/ic_today_black_24dp"-->
+<!--            android:title="@string/today" />-->
+<!--        <item android:id="@+id/menu_week"-->
+<!--            android:icon="@drawable/ic_week_black_24dp"-->
+<!--            android:title="@string/week" />-->
+<!--        <item android:id="@+id/menu_calendar"-->
+<!--            android:icon="@drawable/ic_calendar_black_24dp"-->
+<!--            android:title="@string/calendar" />-->
 <!--        <item android:title="Projects">-->
 <!--            <menu>-->
 <!--                <item android:id="@+id/menu_AA"-->

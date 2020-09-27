@@ -4,33 +4,45 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.android.timemanagementapp.async.DeleteAsyncTask;
-import com.example.android.timemanagementapp.async.InsertAsyncTask;
-import com.example.android.timemanagementapp.async.UpdateAsyncTask;
 import com.example.android.timemanagementapp.models.Task;
 
 import java.util.List;
 
 public class TaskRepository {
     private TaskDatabase taskDatabase;
+    private TaskDao taskDao;
 
     public TaskRepository(Context context) {
         taskDatabase = TaskDatabase.getInstance(context);
+        taskDao = taskDatabase.getNoteDao();
     }
 
     public void insertTask(Task task) {
-        new InsertAsyncTask(taskDatabase.getNoteDao()).execute(task);
+        new Thread(() -> taskDao.insertTask(task)).start();
     }
 
-    public void updateTask(Task task) {
-        new UpdateAsyncTask(taskDatabase.getNoteDao()).execute(task);
+    public Task getTaskById(long id) {
+//        Thread(() -> taskDao.getTaskById(id)).start();
+        return new Task();
     }
 
     public LiveData<List<Task>> retrieveTasks() {
-        return taskDatabase.getNoteDao().getAllTasks();
+        return taskDao.getAllUncompletedTasks();
+    }
+
+    public LiveData<List<Task>> retrieveCompletedTasks() {
+        return taskDao.getCompletedTasks();
+    }
+
+    public LiveData<List<Task>> retrievePriorityTasks() {
+        return taskDao.getPriorityTasks();
+    }
+
+    public void updateTask(Task task) {
+        new Thread(() -> taskDao.updateTask(task)).start();
     }
 
     public void deleteTask(Task task) {
-        new DeleteAsyncTask(taskDatabase.getNoteDao()).execute(task);
+        new Thread(() -> taskDao.deleteTask(task)).start();
     }
 }

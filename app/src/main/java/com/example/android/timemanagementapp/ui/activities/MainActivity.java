@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
         drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close);
         binding.drawerLayout.addDrawerListener(drawerToggle);
 
-        mAdapter = new TaskAdapter(mTasks, this);
+        mAdapter = new TaskAdapter(MainActivity.this, mTasks, this);
         binding.recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewTasks.setHasFixedSize(true);
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -86,15 +86,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void retrieveTasks() {
-        mTaskRepository.retrieveTasks().observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(@Nullable List<Task> tasks) {
-                mTasks.clear();
-                if (tasks != null) {
-                    mTasks.addAll(tasks);
-                }
-                mAdapter.notifyDataSetChanged();
+        mTaskRepository.retrieveTasks().observe(this, tasks -> {
+            mTasks.clear();
+            if (tasks != null) {
+                mTasks.addAll(tasks);
             }
+            mAdapter.notifyDataSetChanged();
         });
     }
 
@@ -126,27 +123,41 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.menu_priority:
                 getSupportActionBar().setTitle("Priority");
                 binding.drawerLayout.closeDrawers();
+                mTaskRepository.retrievePriorityTasks().observe(this, tasks -> {
+                    mTasks.clear();
+                    if (tasks != null) {
+                        mTasks.addAll(tasks);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                });
                 return true;
             case R.id.menu_inbox:
                 getSupportActionBar().setTitle("Inbox");
                 binding.drawerLayout.closeDrawers();
+                mTaskRepository.retrieveTasks().observe(this, tasks -> {
+                    mTasks.clear();
+                    if (tasks != null) {
+                        mTasks.addAll(tasks);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                });
                 return true;
             case R.id.menu_completed:
                 getSupportActionBar().setTitle("Completed");
                 binding.drawerLayout.closeDrawers();
-                return true;
-            case R.id.menu_today:
-                getSupportActionBar().setTitle("Today");
-                binding.drawerLayout.closeDrawers();
-                return true;
-            case R.id.menu_week:
-                getSupportActionBar().setTitle("This Week");
-                binding.drawerLayout.closeDrawers();
+                mTaskRepository.retrieveCompletedTasks().observe(this, tasks -> {
+                    mTasks.clear();
+                    if (tasks != null) {
+                        mTasks.addAll(tasks);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                });
                 return true;
         }
         return false;
     }
 
+    // --- Methods for TaskAdapter.OnTaskClickListener ---
     @Override
     public void onClick(int position) {
         Task task = mTasks.get(position);
@@ -154,16 +165,4 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra("selected_task", task);
         startActivity(intent);
     }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            // delete
-        }
-    };
 }

@@ -18,19 +18,16 @@ public interface TaskDao {
     void insertTask(Task task);
 
     @Query("SELECT * FROM tasks_table WHERE id = :id")
-    Task getTaskById(int id);
+    Task getTaskById(long id);
 
     @Query("SELECT * FROM tasks_table WHERE completed = 0")
-    LiveData<List<Task>> getAllTasks();
+    LiveData<List<Task>> getAllUncompletedTasks();
 
     @Query("SELECT * FROM tasks_table WHERE completed = 1")
-    LiveData<List<Task>> getAllCompletedTasks();
+    LiveData<List<Task>> getCompletedTasks();
 
-    @Query("SELECT * FROM tasks_table WHERE priority = :priority")
-    LiveData<List<Task>> getTasksByPriority(int priority);
-
-    @Query("SELECT * FROM tasks_table WHERE completed = :completed")
-    LiveData<List<Task>> getTasksByCompleted(int completed);
+    @Query("SELECT * FROM tasks_table WHERE priority = 1 AND completed = 0")
+    LiveData<List<Task>> getPriorityTasks();
 
     @Delete
     void deleteTask(Task... tasks);
