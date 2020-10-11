@@ -10,7 +10,7 @@ import com.example.android.timemanagementapp.persistence.TaskRepository;
 
 import java.util.Calendar;
 
-public class EditTaskActivity extends AppCompatActivity {
+public class TaskActivityOld extends AppCompatActivity {
 
     private ActivityEditTaskBinding binding;
     private TaskRepository repository;
@@ -41,7 +41,7 @@ public class EditTaskActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("New Task");
         }
 
-        binding.saveTask.setOnClickListener(v -> {
+        binding.saveTaskBtn.setOnClickListener(v -> {
             saveTask();
             finish();
         });
@@ -49,7 +49,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     private void getExistingTask() {
         task = getIntent().getParcelableExtra("selected_task");
-        binding.title.setText(task.getTitle());
+        binding.titleEdit.setText(task.getTitle());
         binding.extraContent.description.setText(task.getDescription());
     }
 
@@ -66,7 +66,7 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     private void saveTask() {
-        String title = String.valueOf(binding.title.getText()).trim();
+        String title = String.valueOf(binding.titleEdit.getText()).trim();
         String description = String.valueOf(binding.extraContent.description).trim();
 
         task.setTitle(title);

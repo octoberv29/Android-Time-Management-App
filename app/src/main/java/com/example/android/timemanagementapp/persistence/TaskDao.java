@@ -30,9 +30,9 @@ public interface TaskDao {
     LiveData<List<Task>> getPriorityTasks();
 
     @Delete
-    void deleteTask(Task... tasks);
+    void deleteTask(Task task);
 
     @Update
-    void updateTask(Task... tasks);
+    void updateTask(Task task);
 
 }

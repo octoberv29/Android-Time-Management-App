@@ -13,16 +13,14 @@ import com.example.android.timemanagementapp.models.Task;
 import com.example.android.timemanagementapp.persistence.TaskRepository;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskHolder> {
 
-    private List<Task> mTasks = new ArrayList<>();
+    private List<Task> mTasks;
     private OnTaskClickListener mOnTaskClickListener;
 
     private TaskRepository repository;

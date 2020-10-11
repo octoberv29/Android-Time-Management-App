@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/edit_toolbar"
+            android:id="@+id/editToolbar"
             android:layout_width="match_parent"
             android:layout_height="128dp"
             android:background="?attr/colorPrimary"
@@ -29,7 +29,7 @@
                 app:hintTextColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/title"
+                    android:id="@+id/titleEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
@@ -42,7 +42,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/save_task"
+        android:id="@+id/saveTaskBtn"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

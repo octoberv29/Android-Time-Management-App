@@ -1,9 +1,7 @@
 package com.example.android.timemanagementapp.ui.activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements
+public class MainActivityOld extends AppCompatActivity implements
         TaskAdapter.OnTaskClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements
         drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close);
         binding.drawerLayout.addDrawerListener(drawerToggle);
 
-        mAdapter = new TaskAdapter(MainActivity.this, mTasks, this);
-        binding.recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerViewTasks.setHasFixedSize(true);
+        mAdapter = new TaskAdapter(MainActivityOld.this, mTasks, this);
+        binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerTasks.setHasFixedSize(true);
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -72,12 +70,12 @@ public class MainActivity extends AppCompatActivity implements
                 mAdapter.notifyDataSetChanged();
                 mTaskRepository.deleteTask(taskToDelete);
             }
-        }).attachToRecyclerView(binding.recyclerViewTasks);
-        binding.recyclerViewTasks.setAdapter(mAdapter);
+        }).attachToRecyclerView(binding.recyclerTasks);
+        binding.recyclerTasks.setAdapter(mAdapter);
 
         binding.addTaskBtn.setColorFilter(Color.WHITE);
         binding.addTaskBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, EditTaskActivity.class);
+            Intent intent = new Intent(MainActivityOld.this, TaskActivityOld.class);
             startActivity(intent);
         });
 
@@ -161,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClick(int position) {
         Task task = mTasks.get(position);
-        Intent intent = new Intent(MainActivity.this, EditTaskActivity.class);
+        Intent intent = new Intent(MainActivityOld.this, TaskActivityOld.class);
         intent.putExtra("selected_task", task);
         startActivity(intent);
     }
